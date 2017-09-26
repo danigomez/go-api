@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func Routes(rw http.ResponseWriter, r *http.Request) {
+func RootRoutes(rw http.ResponseWriter, r *http.Request) {
 
 	rw.Header().Set("Content-Type", "application/json")
 
@@ -14,6 +14,20 @@ func Routes(rw http.ResponseWriter, r *http.Request) {
 		break
 	case "POST":
 		DoPost(rw, r)
+		break
+	}
+}
+
+func IdRoutes(rw http.ResponseWriter, r *http.Request) {
+
+	rw.Header().Set("Content-Type", "application/json")
+
+	switch r.Method {
+	case "GET":
+		DoGetOne(rw, r)
+		break
+	case "DELETE":
+		DoDeleteOne(rw, r)
 		break
 	}
 }

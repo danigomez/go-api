@@ -3,6 +3,7 @@ package database
 import (
 	"github.com/danigomez/go-api/database/model"
 	"strconv"
+	"errors"
 )
 
 type productTable struct {
@@ -26,8 +27,22 @@ func (p productTable) GetAll() []model.Product {
 	return p.data
 }
 
+func (p productTable) GetOneById(id string) (ret model.Product, err error) {
 
-var ProductsTable productTable
+	for _, product := range p.data {
+		if product.Id == id {
+			ret = product
+			err = nil
+			return
+		}
+	}
+
+	err = errors.New("the requested id doesn't exists")
+	return
+}
+
+
+var ProductsRepository productTable
 
 
 

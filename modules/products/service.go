@@ -10,21 +10,21 @@ import (
 func CreateOne(data model.Product) (status bool, message string) {
 	fmt.Println("Processing data => " + data.String())
 
-	database.ProductsTable.CreateOne(data)
+	database.ProductsRepository.CreateOne(data)
 	status = true
 	message = "Created successfully!"
 	return
 }
 
 func GetAll() []model.Product {
-	return database.ProductsTable.GetAll()
+	return database.ProductsRepository.GetAll()
 }
 
 func GetOneById(id string) model.Product {
-	fmt.Println("Processing data => " + id)
-
-	var product model.Product
-
+	product, err := database.ProductsRepository.GetOneById(id)
+	if err != nil {
+		panic(err)
+	}
 	return product
 }
 

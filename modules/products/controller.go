@@ -7,11 +7,27 @@ import (
 	"log"
 	"net/http"
 	"github.com/danigomez/go-api/database/model"
+	"github.com/gorilla/mux"
 )
 
 func DoGetOne(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	id := vars["id"]
+
+	productData := GetOneById(id)
+
+	// Create Result data
+	var result common.RequestResult
+	result.StatusCode = "200"
+	result.Data = productData
+
+	json.NewEncoder(rw).Encode(&result)
+}
+
+func DoDeleteOne(rw http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
-	GetOneById(id)
+	DeleteOneById(id)
 }
 
 func DoGetAll(rw http.ResponseWriter, r *http.Request) {
@@ -22,14 +38,12 @@ func DoGetAll(rw http.ResponseWriter, r *http.Request) {
 	result.StatusCode = "200"
 	result.Data = allData
 
-	encoder := json.NewEncoder(rw)
-	encoder.Encode(&result)
+	json.NewEncoder(rw).Encode(&result)
 }
 
 func DoPost(rw http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
 	var product model.Product
-	err := decoder.Decode(&product)
+	err := json.NewDecoder(r.Body).Decode(&product)
 
 	fmt.Println(product.Name)
 
@@ -40,7 +54,6 @@ func DoPost(rw http.ResponseWriter, r *http.Request) {
 		result.StatusCode = "200"
 		result.Data = message
 
-		encoder := json.NewEncoder(rw)
-		encoder.Encode(&result)
+		json.NewEncoder(rw).Encode(&result)
 	}
 }
