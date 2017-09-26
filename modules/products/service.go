@@ -1,40 +1,29 @@
 package products
 
 import (
-	"bytes"
 	"fmt"
-	"strconv"
+	"github.com/danigomez/go-api/database"
+	"github.com/danigomez/go-api/database/model"
 )
 
-type Product struct {
-	Id          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Value       int    `json:"value"`
-}
 
-func (p Product) String() string {
-	var buf bytes.Buffer
-
-	buf.WriteString("[id]: " + p.Id + "\n")
-	buf.WriteString("[Name]: " + p.Name + "\n")
-	buf.WriteString("[Description]: " + p.Description + "\n")
-	buf.WriteString("[Value]: " + strconv.Itoa(p.Value) + "\n")
-
-	return buf.String()
-}
-
-func CreateOne(data Product) (status bool, message string) {
+func CreateOne(data model.Product) (status bool, message string) {
 	fmt.Println("Processing data => " + data.String())
+
+	database.ProductsTable.CreateOne(data)
 	status = true
-	message = "This is a test"
+	message = "Created successfully!"
 	return
 }
 
-func GetOneById(id string) Product {
+func GetAll() []model.Product {
+	return database.ProductsTable.GetAll()
+}
+
+func GetOneById(id string) model.Product {
 	fmt.Println("Processing data => " + id)
 
-	var product Product
+	var product model.Product
 
 	return product
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/danigomez/go-api/common"
 	"log"
 	"net/http"
+	"github.com/danigomez/go-api/database/model"
 )
 
 func DoGetOne(rw http.ResponseWriter, r *http.Request) {
@@ -13,9 +14,21 @@ func DoGetOne(rw http.ResponseWriter, r *http.Request) {
 	GetOneById(id)
 }
 
+func DoGetAll(rw http.ResponseWriter, r *http.Request) {
+	allData := GetAll()
+
+	// Create Result data
+	var result common.RequestResult
+	result.StatusCode = "200"
+	result.Data = allData
+
+	encoder := json.NewEncoder(rw)
+	encoder.Encode(&result)
+}
+
 func DoPost(rw http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-	var product Product
+	var product model.Product
 	err := decoder.Decode(&product)
 
 	fmt.Println(product.Name)

@@ -10,7 +10,7 @@ func Routes(rw http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		DoGetOne(rw, r)
+		DoGetAll(rw, r)
 		break
 	case "POST":
 		DoPost(rw, r)
